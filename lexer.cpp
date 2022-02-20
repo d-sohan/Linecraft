@@ -30,10 +30,86 @@ public:
     std::string get_file_name() { return name; }
 };
 
+int relop(const std::string& line, int index){
+    int state = 0, i = index;
+    while(true){
+        switch(state){
+            case 0:
+                if(line[i] == '<') state = 1;
+                else if(line[i] == '!') state = 9;
+                else if(line[i] == '=') state = 5;
+                else if(line[i] == '>') state = 6;
+                else return index;
+                break;
+
+            case 1:
+                i++;
+                if(line[i] == '=') state = 2;
+                else if(line[i] == '>') state = 3;
+                else state = 4;
+                break;
+
+            case 2:
+                std::cout << "(relop, LE)" << "\n";
+                return i;
+            
+            case 3:
+                std::cout << "(relop, NE)" << "\n";
+                return i;
+            
+            case 4:
+                i--;
+                std::cout << "(relop, LT)" << "\n";
+                return i;
+            
+            case 5:
+                std::cout << "(relop, EQ)" << "\n";
+                return i;
+            
+            case 6:
+                i++;
+                if(line[i] == '=') state = 7;
+                else state = 8;
+                break;
+            
+            case 7:
+                std::cout << "(relop, GE)" << "\n";
+                return i;
+            
+            case 8:
+                i--;
+                std::cout << "(relop, GT)" << "\n";
+                return i;
+            
+            case 9:
+                i++;
+                if(line[i] == '=') state = 3;
+                break;
+            
+            default:
+                state = 0;
+                break;
+        }
+    }
+}
+
+void tokenizer(const std::string& line){
+    int index = 0;
+    while(index<line.length()){
+        if(line[index] != ' '){
+            index = relop(line, index);
+            index++;
+        }
+        else
+            index++;
+    }
+}
+
 void write_back(File& file, CodeLines& cl)
 {
     for (const auto& line : cl) {
         std::cout << line << std::endl;
+        tokenizer(line);
     }
 }
 
