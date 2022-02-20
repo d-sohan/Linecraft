@@ -1,0 +1,113 @@
+<function-def>:
+<return-type> id(<parameter-list>){<statements>}
+
+<return-type>:
+<type>|void
+
+<type>:
+int|float|char|bool
+
+
+<parameter-list>:
+<type> id|<type> id,<parameter-list>|ε
+
+<statements>:
+<statement>|<statement><statements>
+
+<statement>:
+<declaration>|<assignment>|<if-else>|<while>|<expression>|<return-stmt>|ε
+
+
+<declaration>:
+<var-decl>|
+<array-decl>
+
+<var-decl>:
+<type> <var-id-list>;
+
+<var-id-list>:
+id|
+id,<var-id-list>|
+id:=<expression>|
+id:=<expression>,<var-id-list>
+
+<array-decl>:
+<type> <array-id-list>;
+
+<array-id-list>:
+id[<arth-exp>]|
+id[<arth-exp>],<array-id-list>|
+id[<arth-exp>]:=[<exp-list>]|
+id[<arth-exp>]:=[<exp-list>],<array-id-list>
+
+<exp-list>:
+<expression>|
+<expression>,<exp-list>
+
+<assignment>:
+id:=<expression>|
+id[<expression>]:=<expression>
+
+<if-else>:
+if(<bool-exp>){<statements>}|
+if(<bool-exp>){<statements>}else{<statements>}
+
+<while>:
+while(<bool-exp>){<statements>}
+
+<return-stmt>:
+return <expression>;
+
+
+
+
+
+
+
+
+
+
+<expression>:
+<bool-exp>|
+<arth-exp>|
+charcter_literal |
+string_literal
+
+<bool-exp>:
+<bool-term>|
+<bool-term>&&<bool-exp>|
+<bool-term>||<bool-exp>
+
+<bool-term>:
+<bool-primary>
+!<bool-primary>
+<arth-exp> < <arth-exp> | 
+<arth-exp> <= <arth-exp>
+<arth-exp> = <arth-exp>
+<arth-exp> != <arth-exp>
+<arth-exp> >= <arth-exp>
+<arth-exp> > <arth-exp>
+
+<bool-primary>:
+true|false|(<bool-exp>)
+
+
+
+<arth-exp>:
+<arth-term>
+<arth-term>+<arth-exp>
+<arth-term>-<arth-exp>
+
+<arth-term>:
+<arth-primary>
+<arth-primary>*<arth-term>
+<arth-primary>/<arth-term>
+
+<arth-primary>:
+id|-id|(<arth-exp>)|<function-call>|<array-subscript>|integer_literal | float_literal
+
+<function-call>:
+id(<expression>)
+
+<array-subscript>:
+id[<arth-exp>]
