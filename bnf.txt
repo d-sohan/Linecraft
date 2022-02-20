@@ -62,11 +62,6 @@ return <expression>;
 
 
 
-
-
-
-
-
 <expression>:
 <bool-exp>|
 <arth-exp>|
@@ -102,9 +97,10 @@ true|false|(<bool-exp>)
 <arth-primary>
 <arth-primary>*<arth-term>
 <arth-primary>/<arth-term>
+<arth-primary>%<arth-term>
 
 <arth-primary>:
-id|-id|(<arth-exp>)|<function-call>|<array-subscript>|integer_literal | float_literal
+id|(<arth-exp>)|<function-call>|<array-subscript>|integer_literal | float_literal
 
 <function-call>:
 id(<expression>)
