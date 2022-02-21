@@ -1,133 +1,112 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <functional>
+#include "include/utilities.h"
+#include "tokens.h"
 
-using CodeLines = std::vector<std::string>;
-
-const std::string WHITESPACE = " \n\r\t\f\v";
-std::string ltrim(const std::string &s)
-{
-    size_t start = s.find_first_not_of(WHITESPACE);
-    return (start == std::string::npos) ? "" : s.substr(start);
-}
-
-std::string rtrim(const std::string &s)
-{
-    size_t end = s.find_last_not_of(WHITESPACE);
-    return (end == std::string::npos) ? "" : s.substr(0, end + 1);
-}
-
-std::string trim(const std::string &s) {
-    return rtrim(ltrim(s));
-}
-
-
-
-class File : public std::fstream {
-    std::string name;
-public:
-    File(const char* file) : std::fstream{ file }, name{ file } {}
-    std::string get_file_name() { return name; }
+struct CodeLine {
+    int line_num;
+    std::string code;
+    CodeLine(int ln, std::string c) : line_num{ ln }, code{ c }{}
 };
 
-int relop(const std::string& line, int index){
-    int state = 0, i = index;
-    while(true){
-        switch(state){
-            case 0:
-                if(line[i] == '<') state = 1;
-                else if(line[i] == '!') state = 9;
-                else if(line[i] == '=') state = 5;
-                else if(line[i] == '>') state = 6;
-                else return index;
-                break;
 
-            case 1:
-                i++;
-                if(line[i] == '=') state = 2;
-                else if(line[i] == '>') state = 3;
-                else state = 4;
-                break;
 
-            case 2:
-                std::cout << "(relop, LE)" << "\n";
-                return i;
-            
-            case 3:
-                std::cout << "(relop, NE)" << "\n";
-                return i;
-            
-            case 4:
-                i--;
-                std::cout << "(relop, LT)" << "\n";
-                return i;
-            
-            case 5:
-                std::cout << "(relop, EQ)" << "\n";
-                return i;
-            
-            case 6:
-                i++;
-                if(line[i] == '=') state = 7;
-                else state = 8;
-                break;
-            
-            case 7:
-                std::cout << "(relop, GE)" << "\n";
-                return i;
-            
-            case 8:
-                i--;
-                std::cout << "(relop, GT)" << "\n";
-                return i;
-            
-            case 9:
-                i++;
-                if(line[i] == '=') state = 3;
-                break;
-            
-            default:
-                state = 0;
-                break;
-        }
-    }
-}
 
-void tokenizer(const std::string& line){
-    int index = 0;
-    while(index<line.length()){
-        if(line[index] != ' '){
-            index = relop(line, index);
-            index++;
-        }
-        else
-            index++;
-    }
-}
+using dfa_function = std::function < Token(std::string::const_iterator&, std::string::const_iterator&)>;
 
-void write_back(File& file, CodeLines& cl)
+
+
+std::vector<dfa_function> dfas = {
+    keywords,
+    relop
+};
+
+
+
+
+Token get_next_token(std::string::const_iterator& lexeme_begin, std::string::const_iterator& eol)
 {
-    for (const auto& line : cl) {
-        std::cout << line << std::endl;
-        tokenizer(line);
+    std::string::const_iterator forward = lexeme_begin;
+    Token tk;
+    for (const auto& dfa : dfas) {
+        tk = dfa(forward, eol);
+        if (tk.token_id == NOT_FOUND) {
+            forward = lexeme_begin;
+        }
+        else break;
+    }
+    for (lexeme_begin = forward; lexeme_begin != eol && isspace(*lexeme_begin); ++lexeme_begin);
+    return tk;
+}
+
+
+
+
+
+
+void tokenizer(const std::string& line, int line_number) {
+    std::string::const_iterator lexeme_begin = line.begin();
+    std::string::const_iterator eol = line.end();
+    while (lexeme_begin != eol) {
+        Token token = get_next_token(lexeme_begin, eol);
+        if (token.token_id == NOT_FOUND) {
+            std::cout << "<Invalid token>";
+            do {
+                ++lexeme_begin;
+            } while (lexeme_begin != eol && *lexeme_begin == ' ');
+        }
+        else {
+            std::cout << "<Token " << token.token_id << ", lexeme " << token.lexeme << ">";
+        }
+        std::cout << " @ " << line_number << std::endl;
     }
 }
 
-void perform(File& file)
+
+
+
+
+
+
+void perform(std::vector<CodeLine>& cl)
 {
-    CodeLines cl;
+    for (int i = 0, n = cl.size(); i < n; ++i) {
+        std::cout << cl[i].code << std::endl;
+        tokenizer(cl[i].code, cl[i].line_num);
+    }
+}
+
+
+
+
+
+
+
+void load(File& file)
+{
+    std::vector<CodeLine> cl;
     std::string line;
+    int ln = 0;
     while (std::getline(file, line, '\n')) {
+        ++ln;
         auto found = line.find("//");
         if (found != std::string::npos) {
             line.erase(found);
         }
         line = trim(line);
-        if (line.length()) cl.push_back(line);
+        if (line.length()) cl.push_back(CodeLine(ln, line));
     }
-    write_back(file, cl);
-    
+    perform(cl);
 }
+
+
+
+
+
+
+
 
 
 
@@ -143,7 +122,7 @@ int main(int argc, char* argv[])
             std::cerr << "Couldn't open " << argv[i] << std::endl;
         }
         else {
-            perform(file);
+            load(file);
         }
     }
     return 0;
