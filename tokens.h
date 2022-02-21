@@ -1,7 +1,49 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+
+// Token_id symbolic constants
+
 #define NOT_FOUND 404
+
+#define ID 500
+#define KWD_INT 300
+
+#define LE 121
+#define GE 111
+#define NE 131
+#define LT 120
+#define GT 110
+#define EQ 130
+
+#define OR 150
+#define AND 145
+#define NOT 140
+
+#define ASSIGN 160
+
+#define ADD 170
+#define SUB 171
+#define MUL 172
+#define DIV 173
+#define MOD 174
+
+#define NUM_I 610
+#define NUM_0 600
+#define NUM_F 650
+
+#define OPEN_ROUND 200
+#define OPEN_CURLY 202
+#define OPEN_SQUARE 204
+#define CLOSE_ROUND 201
+#define CLOSE_CURLY 203
+#define CLOSE_SQUARE 205
+
+#define COMMA 210
+#define SEMICOLON 211 
+
+
+
 
 #include <string>
 

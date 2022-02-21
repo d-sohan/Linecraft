@@ -69,7 +69,7 @@ Token iden(std::string::const_iterator& forward, std::string::const_iterator& eo
         }
         else break;
     }
-    return Token(500, idx);
+    return Token(ID, idx);
 }
 
 Token num(std::string::const_iterator& forward, std::string::const_iterator& eol)
@@ -84,7 +84,7 @@ Token num(std::string::const_iterator& forward, std::string::const_iterator& eol
             ++forward;
             state = 2;
         }
-        else return Token(600, "0");
+        else return Token(NUM_0, "0");
     }
     else {
         idx = *forward;
@@ -105,8 +105,8 @@ Token num(std::string::const_iterator& forward, std::string::const_iterator& eol
         }
         else break;
     }
-    if (state == 1) return Token(610, idx);
-    else return Token(650, idx);
+    if (state == 1) return Token(NUM_I, idx);
+    else return Token(NUM_F, idx);
 }
 
 
@@ -117,17 +117,17 @@ Token op(std::string::const_iterator& forward, std::string::const_iterator& eol)
     ++forward;
     switch (*(forward - 1)) {
     case '=':
-        return Token(130, "=");
+        return Token(EQ, "=");
     case '+':
-        return Token(170, "+");
+        return Token(ADD, "+");
     case '-':
-        return Token(171, "-");
+        return Token(SUB, "-");
     case '*':
-        return Token(172, "*");
+        return Token(MUL, "*");
     case '/':
-        return Token(173, "/");
+        return Token(DIV, "/");
     case '%':
-        return Token(174, "%");
+        return Token(MOD, "%");
     case '<':
         state = 1;
         break;
@@ -154,28 +154,28 @@ Token op(std::string::const_iterator& forward, std::string::const_iterator& eol)
     case 1:
         if (forward != eol && *forward == '=') {
             ++forward;
-            return Token(121, "<=");
+            return Token(LE, "<=");
         }
-        else return Token(120, "<");
+        else return Token(LT, "<");
         break;
     case 2:
         if (forward != eol && *forward == '=') {
             ++forward;
-            return Token(111, ">=");
+            return Token(GE, ">=");
         }
-        else return Token(110, ">");
+        else return Token(GT, ">");
         break;
     case 3:
         if (forward != eol && *forward == '=') {
             ++forward;
-            return Token(131, "!=");
+            return Token(NE, "!=");
         }
-        else return Token(140, "!");
+        else return Token(NOT, "!");
         break;
     case 4:
         if (forward != eol && *forward == '&') {
             ++forward;
-            return Token(145, "&&");
+            return Token(AND, "&&");
         }
         else {
             --forward;
@@ -185,7 +185,7 @@ Token op(std::string::const_iterator& forward, std::string::const_iterator& eol)
     case 5:
         if (forward != eol && *forward == '|') {
             ++forward;
-            return Token(150, "||");
+            return Token(OR, "||");
         }
         else {
             --forward;
@@ -195,7 +195,7 @@ Token op(std::string::const_iterator& forward, std::string::const_iterator& eol)
     case 6:
         if (forward != eol && *forward == '=') {
             ++forward;
-            return Token(160, ":=");
+            return Token(ASSIGN, ":=");
         }
         else {
             --forward;
@@ -214,21 +214,21 @@ Token delim(std::string::const_iterator& forward, std::string::const_iterator& e
     ++forward;
     switch (c) {
     case '(':
-        return Token(200, "(");
+        return Token(OPEN_ROUND, "(");
     case ')':
-        return Token(201, ")");
+        return Token(CLOSE_ROUND, ")");
     case '{':
-        return Token(202, "{");
+        return Token(OPEN_CURLY, "{");
     case '}':
-        return Token(203, "}");
+        return Token(CLOSE_CURLY, "}");
     case '[':
-        return Token(204, "[");
+        return Token(OPEN_SQUARE, "[");
     case ']':
-        return Token(205, "]");
+        return Token(CLOSE_SQUARE, "]");
     case ',':
-        return Token(210, ",");
+        return Token(COMMA, ",");
     case ';':
-        return Token(211, ";");
+        return Token(SEMICOLON, ";");
     default:
         --forward;
         return Token();
