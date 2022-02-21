@@ -20,7 +20,10 @@ using dfa_function = std::function < Token(std::string::const_iterator&, std::st
 
 std::vector<dfa_function> dfas = {
     keywords,
-    relop,
+    iden,
+    op,
+    delim,
+    num,
     // add function names here in order
 };
 
@@ -59,7 +62,7 @@ void lexer(const std::string& line, int line_number) {
             } while (lexeme_begin != eol && *lexeme_begin == ' ');
         }
         else {
-            std::cout << "<Token " << token.token_id << ", lexeme " << token.lexeme << ">";
+            std::cout << "<Token " << token.token_id << ", lexeme \"" << token.lexeme << "\">";
         }
         std::cout << " @ " << line_number << std::endl;
     }

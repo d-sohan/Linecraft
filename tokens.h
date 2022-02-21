@@ -19,7 +19,15 @@ struct Token {
 
 
 Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol);
-Token relop(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
+Token iden(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
+Token op(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
+Token delim(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
+Token num(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
 
 // add function declarations below
 
