@@ -1,8 +1,13 @@
 #include "tokens.h"
 
+/**
+ * Note function definitons must return a Token and take the same parameters, namely
+ * std::string::const_iterator& forward, std::string::const_iterator& eol
+ */
 
 
-// add function definiton here
+
+ // Add new DFA functions below 
 
 
 

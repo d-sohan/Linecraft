@@ -12,10 +12,15 @@ struct Token {
     Token(int tid, std::string l) : token_id{ tid }, lexeme{ l } {}
 };
 
+/**
+ * Note all DFA dunction declarations must have the same signature, i.e.
+ * Token <function-name>(std::string::const_iterator& forward, std::string::const_iterator& eol);
+ */
+
 
 Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol);
 Token relop(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
-// add function declarations here
+// add function declarations below
 
 #endif

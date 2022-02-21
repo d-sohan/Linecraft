@@ -4,17 +4,21 @@ Linecraft is a custom language used to demonstrate the workings of lexer and par
 Currently, we are working on the lexer.
 
 
-To add new tokens (look for placeholders in each of the following files):
-1. Add DFA function definitions in ```tokens.cpp```
-2. Add DFA function declarations in ```tokens.h```
-3. Add the function name (without parenthesis) in ```lexer.cpp```
+
+
+Please read the notes given in the comments of following files carefully before adding new functions!
+
+Steps to add new tokens :
+1. Add the DFA function definitions in ```tokens.cpp```
+2. Add the DFA function declarations in ```tokens.h```
+3. Add the DFA function name (without parenthesis) in ```linecraftc.cpp```
 
 
 
 To compile use:
-```g++ lexer.cpp include/utilities.cpp tokens.cpp -o lexer```
+```g++ linecraftc.cpp tokens.cpp include/utilities.cpp -o linecraftc```
 
 To run:
-```./lexer test.cpp```
+```./linecraftc test.cpp```
 
 
