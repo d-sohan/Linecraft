@@ -77,7 +77,7 @@ void lexer(const std::string& line, int line_number) {
 void perform(std::vector<CodeLine>& cl)
 {
     for (int i = 0, n = cl.size(); i < n; ++i) {
-        std::cout << cl[i].code << std::endl;
+        // std::cout << cl[i].code << std::endl;
         lexer(cl[i].code, cl[i].line_num);
     }
 }
