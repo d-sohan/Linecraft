@@ -15,10 +15,10 @@ Steps to add new tokens :
 
 
 
-To compile use:
+To compile the Linecraft compiler ```linecraftc``` use:
 ```g++ linecraftc.cpp tokens.cpp include/utilities.cpp -o linecraftc```
 
-To run:
-```./linecraftc test.cpp```
+To run on a ```.lcft``` file:
+```./linecraftc test.lcft```
 
 
