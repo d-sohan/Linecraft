@@ -12,7 +12,10 @@ struct Token {
     Token(int tid, std::string l) : token_id{ tid }, lexeme{ l } {}
 };
 
-Token relop(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
 Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol);
+Token relop(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
+// add function declarations here
 
 #endif

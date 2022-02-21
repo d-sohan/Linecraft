@@ -20,7 +20,8 @@ using dfa_function = std::function < Token(std::string::const_iterator&, std::st
 
 std::vector<dfa_function> dfas = {
     keywords,
-    relop
+    relop,
+    // add function names here
 };
 
 

@@ -1,5 +1,55 @@
 #include "tokens.h"
 
+
+
+// add function definiton here
+
+
+
+Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol)
+{
+    // for now keywords only matches "int"
+
+    int state = 0;
+    char c;
+    while (forward != eol) {
+        switch (state) {
+        case 0:
+            c = *forward;
+            if (c == 'i') state = 1;
+            else return Token();
+            forward++;
+            break;
+        case 1:
+            c = *forward;
+            if (c == 'n') state = 2;
+            else return Token();
+            forward++;
+            break;
+        case 2:
+            c = *forward;
+            if (c == 't') state = 3;
+            else return Token();
+            forward++;
+            break;
+        case 3:
+            c = *forward;
+            if (!isalnum(c) && c != '_') return Token(200, "int");
+            else return Token();
+            break;
+        }
+    }
+    switch (state) {
+    case 3:
+        return Token(200, "int");
+    default:
+        return Token();
+    }
+}
+
+
+
+
 Token relop(std::string::const_iterator& forward, std::string::const_iterator& eol) {
     int state = 0;
     char c;
@@ -63,43 +113,5 @@ Token relop(std::string::const_iterator& forward, std::string::const_iterator& e
     }
 }
 
-Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol)
-{
-    // for now keywords only matches "int"
 
-    int state = 0;
-    char c;
-    while (forward != eol) {
-        switch (state) {
-        case 0:
-            c = *forward;
-            if (c == 'i') state = 1;
-            else return Token();
-            forward++;
-            break;
-        case 1:
-            c = *forward;
-            if (c == 'n') state = 2;
-            else return Token();
-            forward++;
-            break;
-        case 2:
-            c = *forward;
-            if (c == 't') state = 3;
-            else return Token();
-            forward++;
-            break;
-        case 3:
-            c = *forward;
-            if (!isalnum(c) && c != '_') return Token(200, "int");
-            else return Token();
-            break;
-        }
-    }
-    switch (state) {
-    case 3:
-        return Token(200, "int");
-    default:
-        return Token();
-    }
-}
+
