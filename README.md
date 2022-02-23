@@ -15,7 +15,8 @@ To run on a file (e.g. ```test.lcft```):
 
 
 ## File Descriptions:  
-```linecraftc.cpp``` is the main file which is used to extract tokens from a file. It uses utility functions defined in ```include/utilities.cpp``` and "DFA functions", which implement the dfas for token extraction, defined in ```include/tokens.cpp```
+```linecraftc.cpp``` is the main file which is used to extract tokens from a file.  
+It uses utility functions defined in ```include/utilities.cpp``` and "DFA functions", which implement the dfas for token extraction, defined in ```include/tokens.cpp```
 
 
 
