@@ -74,7 +74,6 @@ struct Token {
  */
 
 
-// Token kwd(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
 Token kid(std::string::const_iterator& forward, std::string::const_iterator& eol);
 

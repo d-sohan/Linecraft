@@ -6,7 +6,6 @@
 #include <array>
 #include <vector>
 
-#define ALPHABET_SIZE 26
 
 std::string ltrim(const std::string &s);
 std::string rtrim(const std::string &s);

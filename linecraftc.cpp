@@ -29,12 +29,11 @@ std::vector<std::string> keywords = {
 using dfa_function = std::function < Token(std::string::const_iterator&, std::string::const_iterator&)>;
 
 std::vector<dfa_function> dfas = {
-    kid,
-    op,
-    delim,
-    num,
-    sclit,
-    // add function names here in order
+    kid, // keywords and identifier
+    op, // operators
+    delim, // delimiters
+    num, // integer and float literals
+    sclit, // string and char literals
 };
 
 
@@ -70,7 +69,15 @@ Token get_next_token(std::string::const_iterator& lexeme_begin, std::string::con
 
 
 
-void lexer(const std::string& line, int line_number) {
+void lexer(const std::string& line, int line_number)
+{
+    /**
+     * extracts all the tokens from a single codeline and
+     * prints their token id, corresponding lexeme and the line number at which it occurs in the original file.
+     * Incase of errors like invalid token or other, it prints the respective message along with the line number
+     */
+
+    
     std::string::const_iterator lexeme_begin = line.begin();
     std::string::const_iterator eol = line.end();
     while (lexeme_begin != eol) {
@@ -121,7 +128,6 @@ struct CodeLine {
 void perform(std::vector<CodeLine>& cl)
 {
     for (int i = 0, n = cl.size(); i < n; ++i) {
-        // std::cout << cl[i].code << std::endl;
         lexer(cl[i].code, cl[i].line_num);
     }
 }
@@ -134,6 +140,14 @@ void perform(std::vector<CodeLine>& cl)
 
 void load(File& file)
 {
+    /**
+     * This function fetches each line of the file, terminated by a newline, and
+     * strips leading and trailing whitespace,
+     * removes all comments (which begin with '//') from each of the lines and
+     * adds them to a vector
+     */
+
+    
     std::vector<CodeLine> cl;
     std::string line;
     int ln = 0;
@@ -163,14 +177,14 @@ void load(File& file)
 
 int main(int argc, char* argv[])
 {
-    if (argc == 1) {
-        std::cout << "No file provided\n";
+    if (argc != 2) {
+        std::cerr << "Usage: linecraftc <filename>" << std::endl;
         return 0;
     }
-    for (int i = 1; i < argc; ++i) {
-        File file{ argv[i] };
+    else {
+        File file{ argv[1] };
         if (!file.is_open()) {
-            std::cerr << "Couldn't open " << argv[i] << std::endl;
+            std::cerr << "Couldn't open " << argv[1] << std::endl;
         }
         else {
             load(file);

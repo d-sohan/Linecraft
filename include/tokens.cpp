@@ -4,54 +4,14 @@
 
 
 /**
- * Note function definitons must return a Token and take the same parameters, namely
- * std::string::const_iterator& forward, std::string::const_iterator& eol
+ * DFA Functions are implemented here
+ *
+ * Note: function definitons must return a Token and take the same parameters, namely
+ *     std::string::const_iterator& forward, std::string::const_iterator& eol
  */
 
 
 
- // Add new DFA functions below 
-
-
-
-// Token kwd(std::string::const_iterator& forward, std::string::const_iterator& eol)
-// {
-//     int state = 0;
-//     char c;
-//     while (forward != eol) {
-//         switch (state) {
-//         case 0:
-//             c = *forward;
-//             if (c == 'i') state = 1;
-//             else return Token();
-//             forward++;
-//             break;
-//         case 1:
-//             c = *forward;
-//             if (c == 'n') state = 2;
-//             else return Token();
-//             forward++;
-//             break;
-//         case 2:
-//             c = *forward;
-//             if (c == 't') state = 3;
-//             else return Token();
-//             forward++;
-//             break;
-//         case 3:
-//             c = *forward;
-//             if (!isalnum(c) && c != '_') return Token(300, "int");
-//             else return Token();
-//             break;
-//         }
-//     }
-//     switch (state) {
-//     case 3:
-//         return Token(300, "int");
-//     default:
-//         return Token();
-//     }
-// }
 
 
 Token kid(std::string::const_iterator& forward, std::string::const_iterator& eol)

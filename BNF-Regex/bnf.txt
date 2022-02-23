@@ -5,7 +5,7 @@
 <type>|void
 
 <type>:
-int|float|char|bool
+int|float|char|boolean|string
 
 
 <parameter-list>:

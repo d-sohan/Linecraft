@@ -3,6 +3,8 @@ Linecraft is a custom language used to demonstrate the workings of lexer and par
 
 Currently, we are working on the lexer.
 
+## File Descriptions:  
+```linecraftc.cpp``` is the main file which is used to extract tokens from a file. It uses utility functions defined in ```include/utilities.cpp``` and "DFA functions", which implement the dfas for token extraction, defined in ```include/tokens.cpp```
 
 
 
