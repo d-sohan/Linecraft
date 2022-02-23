@@ -1,4 +1,5 @@
 #include "utilities.h"
+#include "tokens.h"
 
 const std::string WHITESPACE = " \n\r\t\f\v";
 std::string ltrim(const std::string &s)
@@ -15,4 +16,21 @@ std::string rtrim(const std::string &s)
 
 std::string trim(const std::string &s) {
     return rtrim(ltrim(s));
+}
+
+bool is_escape(char c)
+{
+    switch (c) {
+    case 'n': case 't': case 'r': case 'v': case '\\': case '\'': case '\"':
+        return true;
+    }
+    return false;
+}
+
+int check_keywords(const std::string& s)
+{
+    for (int i = 0, l = keywords.size(); i < l; ++i) {
+        if (s == keywords[i]) return KWD_BASE + i + 1;
+    }
+    return ID;
 }

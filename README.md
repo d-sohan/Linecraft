@@ -16,7 +16,10 @@ Please read the notes given in the comments of following files carefully before 
 
 
 To compile the Linecraft compiler use:  
-```g++ linecraftc.cpp tokens.cpp include/utilities.cpp -o linecraftc```
+```g++ linecraftc.cpp include/tokens.cpp include/utilities.cpp -o linecraftc```
+
+or using make:  
+```make```
 
 To run on a file (e.g. ```test.lcft```): 
 ```./linecraftc test.lcft```

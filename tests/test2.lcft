@@ -1,0 +1,52 @@
+// Edge & Special Cases
+
+int main(){
+    // Keyword Error
+    itn a := 25;
+    int a := 25;
+
+    // Invalid characters used in an identifier
+    char lett@er# := 'a';
+    char letter := 'a';
+
+    // Multiple characters in char literal
+    char c := 'abc';
+
+    // backslash in char literal
+    char b := '\';
+
+    // Known & Unknown escape sequence
+    string s1 := "asd\zsdf";
+    string s2 := "asdsdf\n";
+
+    // Special characters in number literals
+    int num = 420a#69,;
+    int num = 42069;
+
+    // Arrays
+    int arr[5] := {5,4,3,2,1};
+
+    // Conditional statements and Expressions
+    int a,b,largest;
+    if (a>b){
+        largest := a;
+    }
+    else{
+        largest := b;
+    }
+
+    // Loops
+    int i := 0;
+    while(i<=100){
+        i := i+1;
+    }
+
+    // Errors in relational & logical operators
+    if(a>b && b!!=a)
+        largest := a;
+    else
+        largest := b;
+
+    return 0;
+
+}

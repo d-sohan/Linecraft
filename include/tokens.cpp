@@ -1,4 +1,7 @@
 #include "tokens.h"
+#include "utilities.h"
+
+
 
 /**
  * Note function definitons must return a Token and take the same parameters, namely
@@ -11,48 +14,47 @@
 
 
 
-Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol)
-{
-    // for now keywords only matches "int"
+// Token kwd(std::string::const_iterator& forward, std::string::const_iterator& eol)
+// {
+//     int state = 0;
+//     char c;
+//     while (forward != eol) {
+//         switch (state) {
+//         case 0:
+//             c = *forward;
+//             if (c == 'i') state = 1;
+//             else return Token();
+//             forward++;
+//             break;
+//         case 1:
+//             c = *forward;
+//             if (c == 'n') state = 2;
+//             else return Token();
+//             forward++;
+//             break;
+//         case 2:
+//             c = *forward;
+//             if (c == 't') state = 3;
+//             else return Token();
+//             forward++;
+//             break;
+//         case 3:
+//             c = *forward;
+//             if (!isalnum(c) && c != '_') return Token(300, "int");
+//             else return Token();
+//             break;
+//         }
+//     }
+//     switch (state) {
+//     case 3:
+//         return Token(300, "int");
+//     default:
+//         return Token();
+//     }
+// }
 
-    int state = 0;
-    char c;
-    while (forward != eol) {
-        switch (state) {
-        case 0:
-            c = *forward;
-            if (c == 'i') state = 1;
-            else return Token();
-            forward++;
-            break;
-        case 1:
-            c = *forward;
-            if (c == 'n') state = 2;
-            else return Token();
-            forward++;
-            break;
-        case 2:
-            c = *forward;
-            if (c == 't') state = 3;
-            else return Token();
-            forward++;
-            break;
-        case 3:
-            c = *forward;
-            if (!isalnum(c) && c != '_') return Token(300, "int");
-            else return Token();
-            break;
-        }
-    }
-    switch (state) {
-    case 3:
-        return Token(300, "int");
-    default:
-        return Token();
-    }
-}
 
-Token iden(std::string::const_iterator& forward, std::string::const_iterator& eol)
+Token kid(std::string::const_iterator& forward, std::string::const_iterator& eol)
 {
     char c;
     std::string idx;
@@ -69,8 +71,11 @@ Token iden(std::string::const_iterator& forward, std::string::const_iterator& eo
         }
         else break;
     }
-    return Token(ID, idx);
+
+    return Token(check_keywords(idx), idx);
 }
+
+
 
 Token num(std::string::const_iterator& forward, std::string::const_iterator& eol)
 {
@@ -108,6 +113,7 @@ Token num(std::string::const_iterator& forward, std::string::const_iterator& eol
     if (state == 1) return Token(NUM_I, idx);
     else return Token(NUM_F, idx);
 }
+
 
 
 Token op(std::string::const_iterator& forward, std::string::const_iterator& eol)
@@ -207,9 +213,53 @@ Token op(std::string::const_iterator& forward, std::string::const_iterator& eol)
     }
 }
 
+
+
+Token sclit(std::string::const_iterator& forward, std::string::const_iterator& eol)
+{
+    if (forward == eol || (*forward != '\'' && *forward != '\"')) return Token();
+    char quotes = *forward;
+    ++forward;
+    std::string stx;
+    bool uke = false;
+    while (forward != eol && *forward != quotes) {
+        char c = *forward;
+        stx += c;
+        if (c == '\\') {
+            ++forward;
+            if (forward == eol) {
+                if (quotes == '\'') return Token(UNTER_CHAR);
+                else return Token(UNTER_STR);
+            }
+            if (is_escape(*forward)) uke = true;
+            stx += *forward;
+        }
+        ++forward;
+    }
+    if (forward == eol) {
+        if (quotes == '\'') return Token(UNTER_CHAR);
+        else return Token(UNTER_STR);
+    }
+    ++forward;
+    if (quotes == '\'') {
+        if (stx.length() == 0) {
+            return Token(EMPTY_CHAR);
+        }
+        else if (stx.length() == 1 || (stx.length() == 2 && stx[0] == '\\')) {
+            if (is_escape(stx[1])) return Token(CHAR_LIT, stx);
+            else return Token(CHAR_LIT_UKE, stx);
+        }
+        else {
+            return Token(MUL_CHAR);
+        }
+    }
+    if (uke) return Token(STRL_LIT_UKE, stx);
+    else return Token(STR_LIT, stx);
+}
+
+
 Token delim(std::string::const_iterator& forward, std::string::const_iterator& eol)
 {
-    int state = 0;
     char c = *forward;
     ++forward;
     switch (c) {

@@ -3,12 +3,24 @@
 #include <vector>
 #include <functional>
 #include "include/utilities.h"
-#include "tokens.h"
+#include "include/tokens.h"
 
-struct CodeLine {
-    int line_num;
-    std::string code;
-    CodeLine(int ln, std::string c) : line_num{ ln }, code{ c }{}
+
+
+
+std::vector<std::string> keywords = {
+    "int",
+    "float",
+    "boolean",
+    "char",
+    "string",
+    "return",
+    "void",
+    "true",
+    "false",
+    "if",
+    "else",
+    "while",
 };
 
 
@@ -16,16 +28,22 @@ struct CodeLine {
 
 using dfa_function = std::function < Token(std::string::const_iterator&, std::string::const_iterator&)>;
 
-
-
 std::vector<dfa_function> dfas = {
-    keywords,
-    iden,
+    kid,
     op,
     delim,
     num,
+    sclit,
     // add function names here in order
 };
+
+
+
+
+
+
+
+
 
 
 
@@ -50,18 +68,33 @@ Token get_next_token(std::string::const_iterator& lexeme_begin, std::string::con
 
 
 
+
+
 void lexer(const std::string& line, int line_number) {
     std::string::const_iterator lexeme_begin = line.begin();
     std::string::const_iterator eol = line.end();
     while (lexeme_begin != eol) {
         Token token = get_next_token(lexeme_begin, eol);
-        if (token.token_id == NOT_FOUND) {
+        switch (token.token_id) {
+        case EMPTY_CHAR:
+            std::cout << "<Empty CHAR_LIT>";
+            break;
+        case UNTER_CHAR:
+            std::cout << "<Unterminated CHAR_LIT>";
+            break;
+        case MUL_CHAR:
+            std::cout << "<Multi-character CHAR_LIT>";
+            break;
+        case UNTER_STR:
+            std::cout << "<Unterminated STR_LIT>";
+            break;
+        case NOT_FOUND:
             std::cout << "<Invalid token>";
             do {
                 ++lexeme_begin;
             } while (lexeme_begin != eol && *lexeme_begin == ' ');
-        }
-        else {
+            break;
+        default:
             std::cout << "<Token " << token.token_id << ", lexeme \"" << token.lexeme << "\">";
         }
         std::cout << " @ " << line_number << std::endl;
@@ -71,6 +104,17 @@ void lexer(const std::string& line, int line_number) {
 
 
 
+
+
+
+
+
+
+struct CodeLine {
+    int line_num;
+    std::string code;
+    CodeLine(int ln, std::string c) : line_num{ ln }, code{ c }{}
+};
 
 
 
@@ -104,6 +148,9 @@ void load(File& file)
     }
     perform(cl);
 }
+
+
+
 
 
 

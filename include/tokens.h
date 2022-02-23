@@ -7,7 +7,8 @@
 #define NOT_FOUND 404
 
 #define ID 500
-#define KWD_INT 300
+
+#define KWD_BASE 300
 
 #define LE 121
 #define GE 111
@@ -32,6 +33,15 @@
 #define NUM_0 600
 #define NUM_F 650
 
+#define CHAR_LIT 700
+#define CHAR_LIT_UKE 709
+#define UNTER_CHAR 711
+#define MUL_CHAR 715
+#define EMPTY_CHAR 719
+#define STR_LIT 750
+#define STRL_LIT_UKE 759
+#define UNTER_STR 761
+
 #define OPEN_ROUND 200
 #define OPEN_CURLY 202
 #define OPEN_SQUARE 204
@@ -46,11 +56,15 @@
 
 
 #include <string>
+#include <vector>
+
+extern std::vector<std::string> keywords;
 
 struct Token {
     int token_id = NOT_FOUND;
     std::string lexeme;
     Token() = default;
+    Token(int tid) : token_id{ tid } {}
     Token(int tid, std::string l) : token_id{ tid }, lexeme{ l } {}
 };
 
@@ -60,15 +74,17 @@ struct Token {
  */
 
 
-Token keywords(std::string::const_iterator& forward, std::string::const_iterator& eol);
+// Token kwd(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
-Token iden(std::string::const_iterator& forward, std::string::const_iterator& eol);
+Token kid(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
 Token op(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
 Token delim(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
 Token num(std::string::const_iterator& forward, std::string::const_iterator& eol);
+
+Token sclit(std::string::const_iterator& forward, std::string::const_iterator& eol);
 
 
 // add function declarations below
