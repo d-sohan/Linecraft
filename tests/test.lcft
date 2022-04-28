@@ -1,16 +1,19 @@
 int fact( int n) {
-    if (n <= 1)
+    if (n <= 1) {
     return 1;
-    else
-    return n*fact(n-1);
+    }
+    else {
+    return n*fact(n-1);}
+    
 }
-void main(void) {
-    int x;
-    x = 1;
-    while (x <= 10) {
+void main() {
+    int x := 2, y := 3;
+    while (a && b) {
         write(x);
         write(fact(x));
         writeln();
-        x = x + 1;
+        x := x + 1;
     }
 }
+
+//int id ( int id ) { if ( id <= intlit ) { return intlit ; } else { return id * id ( id - intlit ) ; } } int id ( ) { int id := intlit ; while ( id <= intlit ) { id ( id ) ; id ( id ( id ) ) ; id ( ) ; id := id + intlit ; } }

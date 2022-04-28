@@ -4,6 +4,7 @@
 #include <functional>
 #include "include/utilities.h"
 #include "include/tokens.h"
+#include "parser.h"
 
 
 
@@ -69,7 +70,7 @@ Token get_next_token(std::string::const_iterator& lexeme_begin, std::string::con
 
 
 
-void lexer(const std::string& line, int line_number)
+void lexer(const std::string& line, int line_number, std::vector<std::pair<Token, int>>& tk_stream)
 {
     /**
      * extracts all the tokens from a single codeline and
@@ -77,34 +78,25 @@ void lexer(const std::string& line, int line_number)
      * Incase of errors like invalid token or other, it prints the respective message along with the line number
      */
 
-    
+
     std::string::const_iterator lexeme_begin = line.begin();
     std::string::const_iterator eol = line.end();
     while (lexeme_begin != eol) {
         Token token = get_next_token(lexeme_begin, eol);
         switch (token.token_id) {
-        case EMPTY_CHAR:
-            std::cout << "<Empty CHAR_LIT>";
-            break;
-        case UNTER_CHAR:
-            std::cout << "<Unterminated CHAR_LIT>";
-            break;
-        case MUL_CHAR:
-            std::cout << "<Multi-character CHAR_LIT>";
-            break;
-        case UNTER_STR:
-            std::cout << "<Unterminated STR_LIT>";
+        case EMPTY_CHAR: case UNTER_CHAR: case MUL_CHAR: case UNTER_STR: case CHAR_LIT_UKE: case STRL_LIT_UKE:
             break;
         case NOT_FOUND:
-            std::cout << "<Invalid token>";
+            // std::cout << "<Invalid token>";
             do {
                 ++lexeme_begin;
             } while (lexeme_begin != eol && *lexeme_begin == ' ');
             break;
         default:
-            std::cout << "<Token " << token.token_id << ", lexeme \"" << token.lexeme << "\">";
+            // std::cout << "<Token " << token.token_id << ", lexeme \"" << token.lexeme << "\">";
+            tk_stream.push_back(std::make_pair(token, line_number));
         }
-        std::cout << " @ " << line_number << std::endl;
+        // std::cout << " @ " << line_number << std::endl;
     }
 }
 
@@ -127,9 +119,38 @@ struct CodeLine {
 
 void perform(std::vector<CodeLine>& cl)
 {
+    std::vector<std::pair<Token, int>> tk_stream;
     for (int i = 0, n = cl.size(); i < n; ++i) {
-        lexer(cl[i].code, cl[i].line_num);
+        lexer(cl[i].code, cl[i].line_num, tk_stream);
     }
+    std::list<PToken> ptk_stream;
+    for (const auto& x : tk_stream) {
+        auto token = x.first;
+        int line_num = x.second;
+        std::string token_str = "";
+        switch (token.token_id) {
+        case ID:
+            token_str = "id";
+            break;
+        case NUM_I: case NUM_0:
+            token_str = "intlit";
+            break;
+        case NUM_F:
+            token_str = "floatlit";
+            break;
+        case CHAR_LIT:
+            token_str = "charlit";
+            break;
+        case STR_LIT:
+            token_str = "strlit";
+            break;
+        default:
+            token_str = token.lexeme;
+        }
+        ptk_stream.push_back(PToken{ token_str, line_num });
+    }
+    Parser slr_parser{ "res/pt.csv", "res/cfg.txt" };
+    slr_parser.parse(ptk_stream);
 }
 
 
@@ -147,7 +168,7 @@ void load(File& file)
      * adds them to a vector
      */
 
-    
+
     std::vector<CodeLine> cl;
     std::string line;
     int ln = 0;

@@ -1,5 +1,4 @@
-#ifndef TOKEN_H
-#define TOKEN_H
+#pragma once
 
 
 // Token_id symbolic constants
@@ -87,5 +86,3 @@ Token sclit(std::string::const_iterator& forward, std::string::const_iterator& e
 
 
 // add function declarations below
-
-#endif

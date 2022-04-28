@@ -1,11 +1,11 @@
-#ifndef UTILITIES_H
-#define UTILITIES_H
+#pragma once
 
 #include <string>
 #include <fstream>
 #include <array>
 #include <vector>
-
+#include <sstream>
+#include <iostream>
 
 std::string ltrim(const std::string &s);
 std::string rtrim(const std::string &s);
@@ -23,5 +23,3 @@ bool is_escape(char c);
 int check_keywords(const std::string& s);
 
 
-
-#endif

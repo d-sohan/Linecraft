@@ -2,6 +2,6 @@ CC = g++
 CFLAGS = -Wall
  
  
-linecraftc: linecraftc.cpp include/tokens.cpp include/utilities.cpp include/tokens.h include/utilities.h
-	$(CC) $(CFLAGS) -o linecraftc linecraftc.cpp include/tokens.cpp include/utilities.cpp
+linecraftc: main.cpp include/tokens.cpp include/utilities.cpp parser.cpp include/tokens.h include/utilities.h parser.h
+	$(CC) $(CFLAGS) -o linecraftc main.cpp include/tokens.cpp include/utilities.cpp parser.cpp
  
